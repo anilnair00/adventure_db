@@ -69,7 +69,7 @@ jobs:
            dacpac-package: 'AdventureWorks2012.dacpac'
 
   DeploySQLDBToPrd:
-    needs: DeploySQLDBToDev
+    needs: build
     runs-on: windows-latest
     environment: DeploySQLDB
     if: success() && github.ref == 'refs/heads/prod'
