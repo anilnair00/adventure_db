@@ -84,7 +84,7 @@ jobs:
        - name: Azure SQl deploy 
          uses: Azure/sql-action@v1.3
          with:
-           server-name: pocsqlserver00.database.windows.net
+           server-name: sqlserver0023.database.windows.net
            connection-string: '${{ secrets.AZURE_SQL_CONNECTION_STRING }}'
            dacpac-package: 'AdventureWorks2012.dacpac'
 
