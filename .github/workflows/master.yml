@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: windows-latest
 
     steps:
     - name: Checkout repository
@@ -81,11 +81,20 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+       - name: Fetch secrets from Azure Key Vault
+         id: keyvault
+         uses: azure/get-keyvault-secrets@v1
+         with:
+           keyvault: ${{ secrets.KEYVAULT_NAME }}
+           secrets: |
+            connectionString
+
        - name: Azure SQl deploy 
          uses: Azure/sql-action@v1.3
          with:
-           server-name: sqlserver0023.database.windows.net
-           connection-string: '${{ secrets.AZURE_SQL_CONNECTION_STRING }}'
+           server-name: tesrserver002.database.windows.net
+           #connection-string: '${{ secrets.AZURE_SQL_CONNECTION_STRING }}'
+           connection-string: ${{ steps.keyvault.outputs.connectionString }}
            dacpac-package: 'AdventureWorks2012.dacpac'
 
   # DeploySQLDBToPrd:
