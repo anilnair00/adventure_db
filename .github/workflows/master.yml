@@ -87,14 +87,14 @@ jobs:
          with:
            keyvault: ${{ secrets.KEYVAULT_NAME }}
            secrets: |
-            connectionString1
+            connectionString
 
        - name: Azure SQl deploy 
          uses: Azure/sql-action@v1.3
          with:
            server-name: tesrserver002.database.windows.net
            #connection-string: '${{ secrets.AZURE_SQL_CONNECTION_STRING }}'
-           connection-string: ${{ steps.keyvault.outputs.connectionString1 }}
+           connection-string: ${{ steps.keyvault.outputs.connectionString }}
            dacpac-package: 'AdventureWorks2012.dacpac'
 
   # DeploySQLDBToPrd:
