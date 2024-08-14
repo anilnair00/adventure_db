@@ -92,7 +92,7 @@ jobs:
        - name: Azure SQl deploy 
          uses: Azure/sql-action@v1.3
          with:
-           server-name: tesrserver002.database.windows.net
+           server-name: testserver003.database.windows.net
            #connection-string: '${{ secrets.AZURE_SQL_CONNECTION_STRING }}'
            connection-string: ${{ steps.keyvault.outputs.connectionStrin }}
            dacpac-package: 'AdventureWorks2012.dacpac'
