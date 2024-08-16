@@ -90,12 +90,15 @@ jobs:
            secrets: |
             connectionStrin
 
-       # - name: Install sqlpackage
-       #   run: |
-       #    Invoke-WebRequest -Uri https://aka.ms/sqlpackage -OutFile sqlpackage.zip
-       #    Expand-Archive -Path sqlpackage.zip -DestinationPath .\sqlpackage
-       #    $env:Path += ";$pwd\sqlpackage"
+       - name: Install sqlpackage
+         run: |
+          Invoke-WebRequest -Uri https://aka.ms/sqlpackage -OutFile sqlpackage.zip
+          Expand-Archive -Path sqlpackage.zip -DestinationPath .\sqlpackage
+          $env:Path += ";$pwd\sqlpackage"
 
+       - name: Deploy DACPAC to Azure SQL Database
+         run: |
+          sqlpackage /Action:Publish /SourceFile:./dacpac/AdventureWorks2012.dacpac /TargetServerName:testserver003.database.windows.net /TargetDatabaseName:testdb /TargetEncryptConnection:True /TargetTrustServerCertificate:False /TargetAuthentication:ActiveDirectoryPassword /User:sqladmin@nairanil83gmail.onmicrosoft.com /Password:p@ssword@12345678
        # -  name: Deploy DACPAC to Azure SQL Database
        #    run: |
        #     sqlpackage /Action:Publish /SourceFile: SQLDB/AdventureWorks2012.dacpac /TargetServerName:testserver003.database.windows.net /TargetDatabaseName:testdb /TargetEncryptConnection:True /TargetTrustServerCertificate:False /TargetAuthentication:ActiveDirectoryServicePrincipal /TenantId:${{ secrets.AZURE_TENANT_ID }} /ClientId:${{ secrets.AZURE_CLIENT_ID }} /ClientSecret:${{ secrets.AZURE_CLIENT_SECRET }}
