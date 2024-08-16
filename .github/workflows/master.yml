@@ -105,8 +105,7 @@ jobs:
          with:
            server-name: testserver003.database.windows.net
            #connection-string: '${{ secrets.AZURE_SQL_CONNECTION_STRING }}'
-           AuthenticationType: aadAuthenticationIntegrated
-           # connection-string: ${{ steps.keyvault.outputs.connectionStrin }}
+           connection-string: ${{ steps.keyvault.outputs.connectionStrin }}
            dacpac-package: 'AdventureWorks2012.dacpac'
 
   # DeploySQLDBToPrd:
