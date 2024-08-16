@@ -96,17 +96,18 @@ jobs:
           Expand-Archive -Path sqlpackage.zip -DestinationPath .\sqlpackage
           $env:Path += ";$pwd\sqlpackage"
 
-       -  name: Deploy DACPAC to Azure SQL Database
-          run: |
-           sqlpackage /Action:Publish /SourceFile: SQLDB/AdventureWorks2012.dacpac /TargetServerName:testserver003.database.windows.net /TargetDatabaseName:testdb /TargetEncryptConnection:True /TargetTrustServerCertificate:False /TargetAuthentication:ActiveDirectoryServicePrincipal /TenantId:${{ secrets.AZURE_TENANT_ID }} /ClientId:${{ secrets.AZURE_CLIENT_ID }} /ClientSecret:${{ secrets.AZURE_CLIENT_SECRET }}
+       # -  name: Deploy DACPAC to Azure SQL Database
+       #    run: |
+       #     sqlpackage /Action:Publish /SourceFile: SQLDB/AdventureWorks2012.dacpac /TargetServerName:testserver003.database.windows.net /TargetDatabaseName:testdb /TargetEncryptConnection:True /TargetTrustServerCertificate:False /TargetAuthentication:ActiveDirectoryServicePrincipal /TenantId:${{ secrets.AZURE_TENANT_ID }} /ClientId:${{ secrets.AZURE_CLIENT_ID }} /ClientSecret:${{ secrets.AZURE_CLIENT_SECRET }}
 
-       # - name: Azure SQl deploy 
-       #   uses: Azure/sql-action@v1.3
-       #   with:
-       #     server-name: testserver003.database.windows.net
-       #     #connection-string: '${{ secrets.AZURE_SQL_CONNECTION_STRING }}'
-       #     connection-string: ${{ steps.keyvault.outputs.connectionStrin }}
-       #     dacpac-package: 'AdventureWorks2012.dacpac'
+       - name: Azure SQl deploy 
+         uses: Azure/sql-action@v1.3
+         with:
+           server-name: testserver003.database.windows.net
+           #connection-string: '${{ secrets.AZURE_SQL_CONNECTION_STRING }}'
+           AuthenticationType: aadAuthenticationIntegrated
+           connection-string: ${{ steps.keyvault.outputs.connectionStrin }}
+           dacpac-package: 'AdventureWorks2012.dacpac'
 
   # DeploySQLDBToPrd:
   #   runs-on: windows-latest
