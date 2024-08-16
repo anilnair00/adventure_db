@@ -100,6 +100,10 @@ jobs:
        #    run: |
        #     sqlpackage /Action:Publish /SourceFile: SQLDB/AdventureWorks2012.dacpac /TargetServerName:testserver003.database.windows.net /TargetDatabaseName:testdb /TargetEncryptConnection:True /TargetTrustServerCertificate:False /TargetAuthentication:ActiveDirectoryServicePrincipal /TenantId:${{ secrets.AZURE_TENANT_ID }} /ClientId:${{ secrets.AZURE_CLIENT_ID }} /ClientSecret:${{ secrets.AZURE_CLIENT_SECRET }}
 
+       - name: Add client IP to Azure SQL Server firewall
+         run: |
+          az sql server firewall-rule create --resource-group  --server testserver003 --name AllowGitHubActions --start-ip-address $(curl -s https://api.ipify.org) --end-ip-address $(curl -s https://api.ipify.org)
+       
        - name: Azure SQl deploy 
          uses: Azure/sql-action@v1.3
          with:
