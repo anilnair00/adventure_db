@@ -102,7 +102,7 @@ jobs:
 
        - name: Add client IP to Azure SQL Server firewall
          run: |
-          az sql server firewall-rule create --resource-group  --server testserver003 --name AllowGitHubActions --start-ip-address $(curl -s https://api.ipify.org) --end-ip-address $(curl -s https://api.ipify.org)
+          az sql server firewall-rule create --resource-group sql-rg001 --server testserver003 --name AllowGitHubActions --start-ip-address $(curl -s https://api.ipify.org) --end-ip-address $(curl -s https://api.ipify.org)
        
        - name: Azure SQl deploy 
          uses: Azure/sql-action@v1.3
