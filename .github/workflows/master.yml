@@ -70,19 +70,7 @@ jobs:
            keyvault: ${{ secrets.KEYVAULT_NAME }}
            secrets: |
             connectionStrin
-
-       - name: Install SqlPackage
-         run: | 
-            Invoke-WebRequest -Uri https://aka.ms/sqlpackage -OutFile sqlpackage.zip
-            Expand-Archive -Path sqlpackage.zip -DestinationPath ./sqlpackage
-
-       - name: Install SqlPackage
-         run: | 
-           ./sqlpackage/sqlpackage.exe /Action:Publish /SourceFile:$dacpacPath /TargetServerName:$serverName /TargetDatabaseName:$databaseName /TargetUser:$aadSqlUsername /TargetPassword:$aadSqlPassword /TargetEncryptConnection:True /TargetTrustServerCertificate:False
-       # - name: Add client IP to Azure SQL Server firewall
-       #   run: |
-       #    az sql server firewall-rule create --resource-group sql-rg001 --server testserver003 --name AllowGitHubActions --start-ip-address $(curl -s https://api.ipify.org) --end-ip-address $(curl -s https://api.ipify.org)
-       
+            
        - name: Azure SQl deploy 
          uses: Azure/sql-action@v1.3
          with:
