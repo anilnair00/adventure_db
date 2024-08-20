@@ -30,26 +30,6 @@ jobs:
       run: |
         # cd AdventureWorks2012
         msbuild.exe AdventureWorks2012.sln /p:Configuration=Release
-        
-    # - name: Setup .NET
-    #   uses: actions/setup-dotnet@v2
-    #   with:
-    #     dotnet-version: '8.0.x' # Specify the .NET version you need
-      
-    # - name: Setup .NET Core
-    #   uses: actions/setup-dotnet@v1
-    #   with:
-    #     dotnet-version: '7.0'  # Specify the .NET Core version you need
-
-    # - name: Build .NET Projects
-    #   run: |
-    #    cd AdventureWorks2012
-    #    dotnet build AdventureWorks2012.sqlsln /p:Configuration=Release
-
-  # build:
-  #   runs-on: self-hosted
-  #   steps:
-  #   - uses: actions/checkout@v2
 
     - uses: actions/upload-artifact@v3.0.0
       with:
@@ -91,13 +71,14 @@ jobs:
            secrets: |
             connectionStrin
 
-       # - name: Deploy DACPAC to Azure SQL Database
-       #   run: |
-       #    sqlpackage /Action:Publish /SourceFile:./dacpac/AdventureWorks2012.dacpac /TargetServerName:testserver003.database.windows.net /TargetDatabaseName:testdb /TargetEncryptConnection:True /TargetTrustServerCertificate:False /TargetAuthentication:ActiveDirectoryPassword /User:sqladmin@nairanil83gmail.onmicrosoft.com /Password:p@ssword@12345678
-       # # -  name: Deploy DACPAC to Azure SQL Database
-       # #    run: |
-       # #     sqlpackage /Action:Publish /SourceFile: SQLDB/AdventureWorks2012.dacpac /TargetServerName:testserver003.database.windows.net /TargetDatabaseName:testdb /TargetEncryptConnection:True /TargetTrustServerCertificate:False /TargetAuthentication:ActiveDirectoryServicePrincipal /TenantId:${{ secrets.AZURE_TENANT_ID }} /ClientId:${{ secrets.AZURE_CLIENT_ID }} /ClientSecret:${{ secrets.AZURE_CLIENT_SECRET }}
+       - name: Install SqlPackage
+         run: | 
+            Invoke-WebRequest -Uri https://aka.ms/sqlpackage -OutFile sqlpackage.zip
+            Expand-Archive -Path sqlpackage.zip -DestinationPath ./sqlpackage
 
+       - name: Install SqlPackage
+         run: | 
+           ./sqlpackage/sqlpackage.exe /Action:Publish /SourceFile:$dacpacPath /TargetServerName:$serverName /TargetDatabaseName:$databaseName /TargetUser:$aadSqlUsername /TargetPassword:$aadSqlPassword /TargetEncryptConnection:True /TargetTrustServerCertificate:False
        # - name: Add client IP to Azure SQL Server firewall
        #   run: |
        #    az sql server firewall-rule create --resource-group sql-rg001 --server testserver003 --name AllowGitHubActions --start-ip-address $(curl -s https://api.ipify.org) --end-ip-address $(curl -s https://api.ipify.org)
@@ -136,54 +117,9 @@ jobs:
        #   with:
        #     server-name: advtestsqldb001.database.windows.net
        #     connection-string: '${{ secrets.AZURE_SQL_CONNECTION_STRING_PRD }}'
-       #     dacpac-package: 'AdventureWorks2012.dacpac'
-
-
-    # - name: Setup .NET Core
-    #   uses: actions/setup-dotnet@v1
-    #   with:
-    #     dotnet-version: '6.0'  # Specify the .NET Core version you need
-
-    # - name: Build Database project
-    #   run: |
-    #     dotnet build AdventureWorks2012/AdventureWorks2012.sqlproj /p:Configuration=Release        
+       #     dacpac-package: 'AdventureWorks2012.dacpac'   
     
-    # - name: Build solution AdventureWorks2012/AdventureWorks2012.sqlproj
-    #   run: msbuild AdventureWorks2012/AdventureWorks2012.sqlproj /p:OutDir=${{ github.workspace }}\BuildOutput
-    #   shell: pwsh
-      
-    # - name: Copy Files to Artifact Staging Directory
-    #   run: |
-    #     $sourceFolder = "${{ github.workspace }}\BuildOutput"
-    #     $targetFolder = "${{ github.workspace }}\artifactStagingDirectory"
-    #     $buildConfiguration = "Release" # Change this to your build configuration if needed
-    #     New-Item -ItemType Directory -Force -Path $targetFolder
-    #     Copy-Item -Path "$sourceFolder\**\bin\$buildConfiguration\**" -Destination $targetFolder -Recurse -Force
-    #   shell: pwsh
-    #   if: always()
-      
-    # # - name: Build DACPAC from SQL project
-    # #   run: |
-    # #     msbuild.exe 'AdventureWorks2012/AdventureWorks2012.sqlproj' /p:OutputPath=./output
-    # #     #msbuild.exe 'AdventureWorks2012/AdventureWorks2012.sln' /p:OutDir=${{ github.workspace }}
-    # #   #dotnet build 'AdventureWorks2012/AdventureWorks2012.sln' /p:OutputPath=./output
-    # # # dotnet build **/*.sqlproj /p:OutputPath=./output
-    # # #   # This step assumes you're building a DACPAC from a SQL project.
-    # # #   # If you already have a DACPAC, you can skip this step.
-      
-    # # - name: Publish
-    # #   run: dotnet publish --output ${{ github.workspace }}\artifactStagingDirectory
-    # # - uses: actions/upload-artifact@v2
-    # #   with:
-    # #     path: ${{ github.workspace }}
-    
-    # - name: Upload Artifacts
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #     name: my-artifact  # Name of the artifact. Change this to something meaningful related to your project.
-    #     path: ${{ github.workspace }}\artifactStagingDirectory  # Path to the directory containing the artifacts to upload.
-    #   if: always()  # Ensures this step runs regardless of the success or failure of previous steps.
-        
+  
     # - name: Deploy DACPAC to Azure SQL Database
     #   uses: azure/sql-action@v1
     #   with:
