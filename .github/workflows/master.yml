@@ -68,26 +68,29 @@ jobs:
        #   with: 
        #     creds: ${{ secrets.AZURE_CREDENTIALS }}
            
-       - uses: azure/login@v1
-         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+       # - uses: azure/login@v1
+       #   with:
+       #    client-id: ${{ secrets.AZURE_CLIENT_ID }}
+       #    tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+       #    subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-       - name: Fetch secrets from Azure Key Vault
-         id: keyvault
-         uses: azure/get-keyvault-secrets@v1
-         with:
-           keyvault: ${{ secrets.KEYVAULT_NAME }}
-           secrets: |
-            connectionStrin
+       # - name: Fetch secrets from Azure Key Vault
+       #   id: keyvault
+       #   uses: azure/get-keyvault-secrets@v1
+       #   with:
+       #     keyvault: ${{ secrets.KEYVAULT_NAME }}
+       #     secrets: |
+       #      connectionStrin
             
        - name: Azure SQl deploy 
          uses: Azure/sql-action@v1.3
          with:
            server-name: testserver003.database.windows.net
+           authentication-type: 'aad-password'
+           aad-username: ${{ secrets.AAD_USERNAME }}
+           aad-password: ${{ secrets.AAD_PASSWORD }}
            #connection-string: '${{ secrets.AZURE_SQL_CONNECTION_STRING }}'
-           connection-string: ${{ steps.keyvault.outputs.connectionStrin }}
+          # connection-string: ${{ steps.keyvault.outputs.connectionStrin }}
            dacpac-package: 'AdventureWorks2012.dacpac'
 
   # DeploySQLDBToPrd:
