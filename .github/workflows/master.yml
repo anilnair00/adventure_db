@@ -82,7 +82,10 @@ jobs:
        #     keyvault: ${{ secrets.KEYVAULT_NAME }}
        #     secrets: |
        #      connectionStrin
-            
+
+       - name: Stop Azure Function App
+         run: az functionapp stop --name testfnc001 --resource-group testfnc001_group  
+
        - name: Azure SQl deploy-database
          uses: azure/sql-action@v2.3
          with:
