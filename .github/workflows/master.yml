@@ -63,6 +63,7 @@ jobs:
          uses: actions/download-artifact@v3.0.0
          with:
             name: SQLDB
+            path: .SQLDB
 
        # - uses: azure/login@v1
        #   with: 
