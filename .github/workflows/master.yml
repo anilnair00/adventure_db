@@ -90,6 +90,7 @@ jobs:
           # connection-string: ${{ steps.keyvault.outputs.connectionStrin }}
            path: .SQLDB/AdventureWorks2012.dacpac
            action: publish
+           skip-firewall-check: true
            # dacpac-package: 'AdventureWorks2012.dacpac'
 
   # DeploySQLDBToPrd:
