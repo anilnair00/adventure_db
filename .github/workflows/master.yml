@@ -83,8 +83,8 @@ jobs:
        #     secrets: |
        #      connectionStrin
 
-       - name: Stop Azure Function App
-         run: az functionapp stop --name testfnc001 --resource-group testfnc001_group  
+       # - name: Stop Azure Function App
+       #   run: az functionapp stop --name testfnc001 --resource-group testfnc001_group  
 
        - name: Azure SQl deploy-database
          uses: azure/sql-action@v2.3
