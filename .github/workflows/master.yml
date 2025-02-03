@@ -69,11 +69,17 @@ jobs:
        #   with: 
        #     creds: ${{ secrets.AZURE_CREDENTIALS }}
            
+       # - uses: azure/login@v1
+       #   with:
+       #    client-id: ${{ secrets.AZURE_CLIENT_ID }}
+       #    tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+       #    subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
        - uses: azure/login@v1
          with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          client-id: 991a6df1-d22c-44dd-bef6-7de75e7ced00
+          tenant-id: abec7981-3822-4685-98b0-533aca20c2ed
+          subscription-id: ee902f6d-01a9-4a32-8c5f-af9403e6c766
 
        # - name: Fetch secrets from Azure Key Vault
        #   id: keyvault
