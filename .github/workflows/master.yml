@@ -89,7 +89,7 @@ jobs:
        - name: Azure SQl deploy-database
          uses: azure/sql-action@v2.3
          with:
-           connection-string: Server=tcp:testserver0012.database.windows.net,1433;Initial Catalog=testdb;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication="Active Directory Default";
+           connection-string: Server=tcp:testeseverdb001.database.windows.net,1433;Initial Catalog=testdb;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication="Active Directory Default";
           # connection-string: ${{ steps.keyvault.outputs.connectionStrin }}
            path: .SQLDB/AdventureWorks2012.dacpac
            action: publish
