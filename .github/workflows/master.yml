@@ -92,15 +92,31 @@ jobs:
        # - name: Stop Azure Function App
        #   run: az functionapp stop --name testfnc001 --resource-group testfnc001_group  
 
-       - name: Azure SQl deploy-database
-         uses: azure/sql-action@v2.3
+       # - name: Azure SQl deploy-database
+       #   uses: azure/sql-action@v2.3
+       #   with:
+       #     connection-string: Server=tcp:testdbserver901.database.windows.net,1433;Initial Catalog=testdb;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication="Active Directory Default";
+       #    # connection-string: ${{ steps.keyvault.outputs.connectionStrin }}
+       #     path: .SQLDB/AdventureWorks2012.dacpac
+       #     action: publish
+       #     skip-firewall-check: true
+       #     # dacpac-package: 'AdventureWorks2012.dacpac'
+
+       - name: Azure SQL Deploy
+         uses: Azure/sql-action@v2.2.1
          with:
-           connection-string: Server=tcp:testdbserver901.database.windows.net,1433;Initial Catalog=testdb;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication="Active Directory Default";
-          # connection-string: ${{ steps.keyvault.outputs.connectionStrin }}
-           path: .SQLDB/AdventureWorks2012.dacpac
-           action: publish
-           skip-firewall-check: true
-           # dacpac-package: 'AdventureWorks2012.dacpac'
+            # The connection string, including authentication information, for the Azure SQL Server database.
+            connection-string: Server=tcp:testdbserver901.database.windows.net,1433;Initial Catalog=testdb;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication="Active Directory Default";
+            # connection-string: ${{ steps.keyvault.outputs.connectionStrin }}
+            # Path to the file used for this action. Supported file types are .sql, .dacpac, or .sqlproj.
+            path: .SQLDB/AdventureWorks2012.dacpac
+            # If not using a .sql file, the sqlpackage action to execute.
+            action: publish
+            # In case of .dacpac or .sqlproj file types, additional sqlpackage arguments that will be applied. In case of .sql file type, additional go-sqlcmd argument that will be applied.
+            # arguments: # optional
+            # # In case of a .sqlproj file, additional arguments that will be applied to dotnet build when building the database project.
+            # build-arguments: # optional
+          
 
   # DeploySQLDBToPrd:
   #   runs-on: windows-latest
