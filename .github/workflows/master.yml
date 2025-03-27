@@ -36,7 +36,24 @@ jobs:
          path: ${{ github.workspace }}/AdventureWorks2012/bin/Release/
 
   DeploySQLDBToDev:
-    runs-on: self-hosted
+    runs-on: windows-latest
+    needs: build
+    if: success() && github.ref == 'refs/heads/master'
+    # if: github.event.ref == 'refs/heads/test' && success()
+    # if: github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'master'
+    # if: github.event.ref == 'refs/heads/master' && success()
+    #if: github.event.ref == 'refs/heads/devbranch' && success()
+    # environment: ${{ github.ref == 'refs/heads/master' ? 'production' : 'staging' }}
+    environment: DeploySQLDB
+
+    steps:
+       - name: download artifact contaning dacpac
+         uses: actions/download-artifact@v3.0.0
+         with:
+            name: SQLDB
+            
+  DeploySQLDBToUAT:
+    runs-on: windows-latest
     needs: build
     if: success() && github.ref == 'refs/heads/preprod'
     # if: github.event.ref == 'refs/heads/test' && success()
