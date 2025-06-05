@@ -109,7 +109,7 @@ jobs:
           /SourceFile:".SQLDB/AdventureWorks2012.dacpac" \
           /TargetServerName:"testserver0034.database.windows.net" \
           /TargetDatabaseName:"testdb" \
-          /AccessToken:"$ACCESS_TOKEN
+          /AccessToken:"$ACCESS_TOKEN"
           
        # - name: Run SQL script using Azure AD token
        #   run: |
