@@ -91,13 +91,13 @@ jobs:
        # - name: Stop Azure Function App
        #   run: az functionapp stop --name testfnc001 --resource-group testfnc001_group  
 
-       # - name: Install sqlpackage on Ubuntu
-       #   run: |
-       #    wget https://aka.ms/sqlpackage-linux -O sqlpackage.zip
-       #    unzip sqlpackage.zip -d sqlpackage
-       #    chmod +x sqlpackage/sqlpackage
-       #    sudo mv sqlpackage /opt/sqlpackage
-       #    echo "/opt/sqlpackage" >> $GITHUB_PATH
+       - name: Install sqlpackage on Ubuntu
+         run: |
+          wget https://aka.ms/sqlpackage-linux -O sqlpackage.zip
+          unzip sqlpackage.zip -d sqlpackage
+          chmod +x sqlpackage/sqlpackage
+          sudo mv sqlpackage /opt/sqlpackage
+          echo "/opt/sqlpackage" >> $GITHUB_PATH
 
        - name: Get Azure AD Access Token
          id: get-token
